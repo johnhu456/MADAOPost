@@ -7,7 +7,6 @@
 //
 
 #import "ParamsTableViewCell.h"
-#import "ParamsTextField.h"
 #import <Masonry.h>
 
 
@@ -17,8 +16,7 @@
 }
 @property (nonatomic, strong) UILabel *lblKey;
 @property (nonatomic, strong) UILabel *lblValue;
-@property (nonatomic, strong) ParamsTextField *ptfKey;
-@property (nonatomic, strong) ParamsTextField *ptfValue;
+
 @end
 @implementation ParamsTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

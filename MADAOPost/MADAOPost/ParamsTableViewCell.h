@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ParamsTextField.h"
 
 @interface ParamsTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) ParamsTextField *ptfKey;
+@property (nonatomic, strong) ParamsTextField *ptfValue;
 
 @end

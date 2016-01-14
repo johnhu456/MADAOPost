@@ -16,6 +16,7 @@
     if (self = [super init]) {
         UIWindow *currentWindow = [FHTool getCurrentWindow];
         self.frame = CGRectMake(0,0,currentWindow.width,HEIGHT_NORMAL);
+        self.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [self setupLabelsWithLabelText:text andPlaceHolder:placeHolder];
     }
     return self;

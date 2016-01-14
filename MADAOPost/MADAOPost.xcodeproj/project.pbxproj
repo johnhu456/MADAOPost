@@ -20,8 +20,10 @@
 		E085F9E71C4654BB00838701 /* DetailRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9E61C4654BB00838701 /* DetailRequestViewController.m */; };
 		E085F9ED1C4657DA00838701 /* ParamsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9EB1C4657DA00838701 /* ParamsTableViewCell.m */; };
 		E085F9F21C4681CF00838701 /* ParamsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9F11C4681CF00838701 /* ParamsTextField.m */; };
-		E085F9F51C46823900838701 /* FHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9F41C46823900838701 /* FHTool.m */; };
-		E085F9F91C4683D500838701 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9F81C4683D500838701 /* UIView+Frame.m */; };
+		E085F9FD1C472EAC00838701 /* RequestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E085F9FC1C472EAC00838701 /* RequestModel.m */; };
+		E085FA0D1C47479600838701 /* FHTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FA091C47479600838701 /* FHTool.m */; };
+		E085FA0E1C47479600838701 /* Foundation+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FA0A1C47479600838701 /* Foundation+Log.m */; };
+		E085FA0F1C47479600838701 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FA0C1C47479600838701 /* UIView+Frame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,10 +70,13 @@
 		E085F9EB1C4657DA00838701 /* ParamsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamsTableViewCell.m; sourceTree = "<group>"; };
 		E085F9F01C4681CF00838701 /* ParamsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamsTextField.h; sourceTree = "<group>"; };
 		E085F9F11C4681CF00838701 /* ParamsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamsTextField.m; sourceTree = "<group>"; };
-		E085F9F31C46823900838701 /* FHTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTool.h; sourceTree = "<group>"; };
-		E085F9F41C46823900838701 /* FHTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTool.m; sourceTree = "<group>"; };
-		E085F9F71C4683D500838701 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
-		E085F9F81C4683D500838701 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		E085F9FB1C472EAC00838701 /* RequestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestModel.h; sourceTree = "<group>"; };
+		E085F9FC1C472EAC00838701 /* RequestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestModel.m; sourceTree = "<group>"; };
+		E085FA081C47479600838701 /* FHTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTool.h; sourceTree = "<group>"; };
+		E085FA091C47479600838701 /* FHTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTool.m; sourceTree = "<group>"; };
+		E085FA0A1C47479600838701 /* Foundation+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Log.m"; sourceTree = "<group>"; };
+		E085FA0B1C47479600838701 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
+		E085FA0C1C47479600838701 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +147,7 @@
 		E085F9AB1C46510C00838701 /* MADAOPost */ = {
 			isa = PBXGroup;
 			children = (
+				E085F9FA1C472E0500838701 /* Model */,
 				E085F9F61C46838B00838701 /* Extension */,
 				E085F9EF1C46819600838701 /* CustomWidgets */,
 				E085F9E91C4657B100838701 /* View */,
@@ -216,12 +222,22 @@
 		E085F9F61C46838B00838701 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				E085F9F31C46823900838701 /* FHTool.h */,
-				E085F9F41C46823900838701 /* FHTool.m */,
-				E085F9F71C4683D500838701 /* UIView+Frame.h */,
-				E085F9F81C4683D500838701 /* UIView+Frame.m */,
+				E085FA081C47479600838701 /* FHTool.h */,
+				E085FA091C47479600838701 /* FHTool.m */,
+				E085FA0A1C47479600838701 /* Foundation+Log.m */,
+				E085FA0B1C47479600838701 /* UIView+Frame.h */,
+				E085FA0C1C47479600838701 /* UIView+Frame.m */,
 			);
 			name = Extension;
+			sourceTree = "<group>";
+		};
+		E085F9FA1C472E0500838701 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E085F9FB1C472EAC00838701 /* RequestModel.h */,
+				E085F9FC1C472EAC00838701 /* RequestModel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -406,14 +422,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				E085F9B41C46510C00838701 /* ViewController.m in Sources */,
+				E085FA0E1C47479600838701 /* Foundation+Log.m in Sources */,
 				E085F9F21C4681CF00838701 /* ParamsTextField.m in Sources */,
 				E085F9B11C46510C00838701 /* AppDelegate.m in Sources */,
-				E085F9F91C4683D500838701 /* UIView+Frame.m in Sources */,
+				E085F9FD1C472EAC00838701 /* RequestModel.m in Sources */,
 				E085F9E71C4654BB00838701 /* DetailRequestViewController.m in Sources */,
 				E085F9ED1C4657DA00838701 /* ParamsTableViewCell.m in Sources */,
 				E085F9E41C4653E900838701 /* MADAOPost.xcdatamodeld in Sources */,
 				E085F9AE1C46510C00838701 /* main.m in Sources */,
-				E085F9F51C46823900838701 /* FHTool.m in Sources */,
+				E085FA0D1C47479600838701 /* FHTool.m in Sources */,
+				E085FA0F1C47479600838701 /* UIView+Frame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
