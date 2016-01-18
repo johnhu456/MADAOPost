@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 
+#import <MagicalRecord/MagicalRecord.h>
+#import <YTKNetwork/YTKNetworkConfig.h>
+
 @interface AppDelegate ()
 
 @end
@@ -16,7 +19,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [MagicalRecord setupCoreDataStack];
     return YES;
 }
 

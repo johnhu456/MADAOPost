@@ -13,8 +13,8 @@
 @property (nonatomic, strong) NSString* baseUrl;
 /**aip URL*/
 @property (nonatomic, strong) NSString* apiUrl;
-/**参数字典*/
-@property (nonatomic, strong) NSMutableDictionary *paramsDic;
+/**参数字典的数组*/
+@property (nonatomic, strong) NSMutableArray *params;
 /**方法*/
 @property (nonatomic, assign) BOOL isPost;
 @end

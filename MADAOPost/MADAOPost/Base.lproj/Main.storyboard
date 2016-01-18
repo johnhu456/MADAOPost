@@ -140,7 +140,11 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Hoa-KV-KDr">
-                        <barButtonItem key="rightBarButtonItem" title="Save" style="plain" id="vru-HC-wVO"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" style="plain" id="vru-HC-wVO">
+                            <connections>
+                                <action selector="saveButtonOnClicked:" destination="BYZ-38-t0r" id="h8g-FY-wOo"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mainTableView" destination="Z8r-Uw-t9h" id="CkI-xp-10z"/>
