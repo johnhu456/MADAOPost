@@ -20,6 +20,8 @@
     #define UIView_Frame_h
 #endif
 
+#define WEAK_SELF __weak typeof(self) weakSelf = self 
+
 @interface FHTool : NSObject
 
 /**获取当前Window对象*/

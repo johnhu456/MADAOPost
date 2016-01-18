@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15A284" minimumToolsVersion="Xcode 7.0">
-    <entity name="Collection" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Arguments" representedClassName="Arguments" syncable="YES">
+        <attribute name="argumentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="argument_request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SingleRequest" inverseName="request_arguments" inverseEntity="SingleRequest" syncable="YES"/>
     </entity>
-    <entity name="Request" syncable="YES">
-        <attribute name="baseURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Boolean" syncable="YES"/>
+    <entity name="RequestCollection" representedClassName="RequestCollection" syncable="YES">
+        <attribute name="collectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="collectionName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="collection_requests" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SingleRequest" inverseName="request_collection" inverseEntity="SingleRequest" syncable="YES"/>
+    </entity>
+    <entity name="SingleRequest" representedClassName="SingleRequest" syncable="YES">
+        <attribute name="apiUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="baseUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="method" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="requestID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="request_arguments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Arguments" inverseName="argument_request" inverseEntity="Arguments" syncable="YES"/>
+        <relationship name="request_collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RequestCollection" inverseName="collection_requests" inverseEntity="RequestCollection" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Collection" positionX="-63" positionY="-18" width="128" height="60"/>
-        <element name="Request" positionX="-54" positionY="0" width="128" height="75"/>
+        <element name="RequestCollection" positionX="-45" positionY="0" width="128" height="88"/>
+        <element name="SingleRequest" positionX="-666" positionY="246" width="128" height="133"/>
+        <element name="Arguments" positionX="-315" positionY="180" width="128" height="105"/>
     </elements>
 </model>

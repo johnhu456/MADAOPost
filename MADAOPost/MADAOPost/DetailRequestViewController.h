@@ -10,7 +10,5 @@
 #import "RequestModel.h"
 
 @interface DetailRequestViewController : UIViewController
-/**请求模型*/
-@property (nonatomic, strong) RequestModel *requestModel;
 
 @end
