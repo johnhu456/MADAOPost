@@ -16,5 +16,11 @@
 @dynamic collectionName;
 @dynamic collectionID;
 @dynamic collection_requests;
-
+- (void)addCollection_requestsObject:(SingleRequest *)value
+{
+    NSMutableSet *flowDetail = [self.collection_requests mutableCopy];
+    [flowDetail addObject:value];
+    self.collection_requests = [flowDetail copy];
+ 
+}
 @end

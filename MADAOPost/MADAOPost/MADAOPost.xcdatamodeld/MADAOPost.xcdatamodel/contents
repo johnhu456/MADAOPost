@@ -15,13 +15,14 @@
         <attribute name="apiUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="baseUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="method" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="requestID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="request_arguments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Arguments" inverseName="argument_request" inverseEntity="Arguments" syncable="YES"/>
         <relationship name="request_collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RequestCollection" inverseName="collection_requests" inverseEntity="RequestCollection" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RequestCollection" positionX="-45" positionY="0" width="128" height="88"/>
-        <element name="SingleRequest" positionX="-666" positionY="246" width="128" height="133"/>
         <element name="Arguments" positionX="-315" positionY="180" width="128" height="105"/>
+        <element name="RequestCollection" positionX="-45" positionY="0" width="128" height="88"/>
+        <element name="SingleRequest" positionX="-666" positionY="246" width="128" height="150"/>
     </elements>
 </model>

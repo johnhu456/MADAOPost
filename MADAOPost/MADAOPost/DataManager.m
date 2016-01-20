@@ -11,6 +11,8 @@
 
 @implementation DataManager
 
+#pragma mark - Core Data部分
+
 + (instancetype)sharedDataManager
 {
     static DataManager *_sharedManager = nil;
@@ -29,6 +31,7 @@
 {
     [MagicalRecord setupCoreDataStack];
 }
+#pragma mark - 参数值对保存
 - (void)createArgumentsWithDic:(NSDictionary *)dictionary
 {
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
@@ -47,4 +50,26 @@
         newRequest.requestID = [DataParser numberInDictionary:dictionary forKey:@"requestID"];
     }];
 }
+#pragma mark - 数组相关
++ (NSArray *)sortedArrayBySortNSSet:(NSSet *)set withKeys:(NSArray *)keys ascending:(BOOL)ascend
+{
+    NSMutableArray *sortKeyArray = [NSMutableArray new];
+    for (id keyStr in keys) {
+        if ([keyStr isKindOfClass:[NSString class]]) {
+            NSSortDescriptor *sortDes = [[NSSortDescriptor alloc] initWithKey:@"argumentID" ascending:YES];
+            [sortKeyArray addObject:sortDes];
+        }
+    }
+    NSArray *resultArray = [set sortedArrayUsingDescriptors:[sortKeyArray copy]];
+    return resultArray;
+}
+
++ (NSArray *)expendArray:(NSArray *)array withObject:(id)obj atIndex:(NSInteger)index
+{
+    NSMutableArray *tempArray = [array mutableCopy];
+    [tempArray insertObject:obj atIndex:index];
+    return [tempArray copy];
+}
+
+
 @end
