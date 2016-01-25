@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RequestModel.h"
+#import "SingleRequest+CoreDataProperties.h"
 
 @interface DetailRequestViewController : UIViewController
 
+@property (nonatomic, strong) SingleRequest *request;
 @end

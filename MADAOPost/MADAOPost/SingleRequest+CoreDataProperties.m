@@ -31,7 +31,9 @@
 }
 - (void)removeRequest_argumentsObject:(Arguments *)value;
 {
-    
+    NSMutableSet *flowDetail = [self.request_arguments mutableCopy];
+    [flowDetail removeObject:value];
+    self.request_arguments = [flowDetail copy];
 }
 - (void)addRequest_arguments:(NSSet<Arguments *> *)values
 {

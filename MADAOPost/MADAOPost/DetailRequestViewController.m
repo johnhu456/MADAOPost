@@ -17,37 +17,47 @@
 #import <MagicalRecord/MagicalRecord.h>
 
 @interface DetailRequest : YTKRequest
-@property (nonatomic, weak) RequestModel *requestModel;
-- (instancetype)initWithRequestModel:(RequestModel *)model;
+@property (nonatomic, weak) SingleRequest *request;
+- (instancetype)initWithRequestModel:(SingleRequest *)request;
 @end
 @implementation DetailRequest
-- (instancetype)initWithRequestModel:(RequestModel *)model
+- (instancetype)initWithRequestModel:(SingleRequest *)request
 {
     if(self = [super init])
     {
-        self.requestModel = model;
+        self.request = request;
     }
     return self;
 }
 - (NSString *)requestUrl {
-    return self.requestModel.apiUrl;
-//    return @"/api/user/login";
+    return self.request.apiUrl;
 }
 - (YTKRequestMethod)requestMethod
 {
-    if (self.requestModel.isPost) {
+    if ([self.request.method integerValue] == 1) {
         return YTKRequestMethodPost;
     }
     return YTKRequestMethodGet;
 }
 - (id)requestArgument
 {
-    NSMutableDictionary *tempParams = [NSMutableDictionary new];
-    for (int i = 0;i < self.requestModel.params.count;i ++) {
-        NSDictionary *params = self.requestModel.params[i];
-        [tempParams setValuesForKeysWithDictionary:params];
+    return [self getArgumentsDicWithRequest:self.request];
+}
+- (NSDictionary *)getArgumentsDicWithRequest:(SingleRequest *)request
+{
+    if(request.request_arguments)
+    {
+        /**排序*/
+        NSSortDescriptor *sortDes = [[NSSortDescriptor alloc] initWithKey:@"argumentID" ascending:YES];
+        NSArray *sortArray = [NSArray arrayWithObject:sortDes];
+        NSArray *argumentArray = [self.request.request_arguments sortedArrayUsingDescriptors:sortArray];
+        NSMutableDictionary *tempDic = [NSMutableDictionary dictionaryWithCapacity:argumentArray.count];
+        for (Arguments *argument in argumentArray) {
+            [tempDic setValue:argument.value forKey:argument.key];
+        }
+        return tempDic;
     }
-    return tempParams;
+    return nil;
 }
 @end
 
@@ -59,8 +69,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *tfUrl;
 @property (nonatomic, strong) NSNumber *method;
 
-/**请求模型*/
-@property (nonatomic, strong, readwrite) SingleRequest *request;
 /**参数数组*/
 @property (nonatomic, strong) NSMutableArray *argumentsMutaArray;
 @end
@@ -96,7 +104,7 @@ static NSString *reuseID = @"paramsCell";
 #warning need to change
 - (SingleRequest *)getCurrentRequest
 {
-    return [SingleRequest MR_findFirst];
+    return self.request;
 }
 /**request初始化*/
 - (void)createRequest
@@ -120,11 +128,12 @@ static NSString *reuseID = @"paramsCell";
     /**request 里参数集需要转换成array进行排序*/
     if(self.request.request_arguments)
     {
-            /**排序*/
+        /**排序*/
         NSSortDescriptor *sortDes = [[NSSortDescriptor alloc] initWithKey:@"argumentID" ascending:YES];
         NSArray *sortArray = [NSArray arrayWithObject:sortDes];
         NSArray *argumentArray = [self.request.request_arguments sortedArrayUsingDescriptors:sortArray];
         self.argumentsMutaArray = [NSMutableArray new];
+        
         for (Arguments *argument in argumentArray) {
             NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:3];
             [dic setValue:argument.key forKey:@"key"];
@@ -150,6 +159,16 @@ static NSString *reuseID = @"paramsCell";
 /**对Request对象进行保存*/
 - (void)saveRequestInData
 {
+    /**设置本地字典数组内容*/
+    for (int i = 0; i<self.argumentsMutaArray.count; i ++) {
+        ParamsTableViewCell *paramsCell = [self.mainTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        if(paramsCell.ftfKey.textField.text != nil){
+            NSMutableDictionary *dic = self.argumentsMutaArray[i];
+            [dic setValue:paramsCell.ftfKey.textField.text forKey:@"key"];
+            [dic setValue:paramsCell.ftfValue.textField.text forKey:@"value"];
+            [dic setValue:[NSNumber numberWithInt:i] forKey:@"argumentID"];
+        }
+    }
     WEAK_SELF;
     [MagicalRecord saveWithBlockAndWait:^(NSManagedObjectContext *localContext) {
         weakSelf.request.apiUrl = weakSelf.tfUrl.text;
@@ -186,14 +205,38 @@ static NSString *reuseID = @"paramsCell";
     ParamsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if (cell == nil) {
         cell = [[ParamsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        cell.ptfKey.text = self.argumentsMutaArray[indexPath.row][@"key"];
-        cell.ptfValue.text = self.argumentsMutaArray[indexPath.row][@"value"];
     }
+    cell.ftfKey.textField.text = self.argumentsMutaArray[indexPath.row][@"key"];
+    cell.ftfValue.textField.text = self.argumentsMutaArray[indexPath.row][@"value"];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 65.f;
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    WEAK_SELF;
+    /**先对本地字典进行修改*/
+    [self.argumentsMutaArray removeObjectAtIndex:indexPath.row];
+
+    /**解除关联*/
+    Arguments *reomveArgument = [Arguments MR_findFirstByAttribute:@"argumentID" withValue:@(indexPath.row)];
+    if(reomveArgument != nil)
+    {
+        [weakSelf.request removeRequest_argumentsObject:reomveArgument];
+        [reomveArgument MR_deleteEntity];
+        [[self objectContext] MR_saveToPersistentStoreAndWait];
+    }
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 #pragma mark - UIPickerView
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -236,34 +279,18 @@ static NSString *reuseID = @"paramsCell";
     [self saveRequestInData];
 }
 - (IBAction)sendButtonOnClicked:(id)sender {
-    for (int i = 0; i<self.argumentsMutaArray.count; i ++) {
-        ParamsTableViewCell *paramsCell = [self.mainTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if(paramsCell.ptfKey.text != nil){
-            NSLog(@"%@",[self.argumentsMutaArray[i] class]);
-            NSMutableDictionary *dic = self.argumentsMutaArray[i];
-            [dic setValue:paramsCell.ptfKey.text forKey:@"key"];
-            [dic setValue:paramsCell.ptfValue.text forKey:@"value"];
-            [dic setValue:[NSNumber numberWithInt:i] forKey:@"argumentID"];
-        }
-    }
     [self saveRequestInData];
-    NSLog(@"+++++%@",self.request);
-    NSLog(@"======dic:%@",self.argumentsMutaArray);
-    NSLog(@"!!!!!!%@",[Arguments MR_findAll]);
-    NSLog(@"%@",[Arguments MR_findFirst]);
-//    [self setupRequest];
+    [self setupRequest];
 }
 - (void)setupRequest
 {
-//    DetailRequest *detailRequest = [[DetailRequest alloc] initWithRequestModel:self.requestModel];
-//    [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
-//        id response = [request responseJSONObject];
-//        NSLog(@"%@",response);
-//        NSLog(@"%@",response[@"errormsg"]);
-//    } failure:^(YTKBaseRequest *request) {
-//        NSLog(@"%@",(NSDictionary *)request);
-//        NSLog(@"错误");
-//    }];
+    DetailRequest *detailRequest = [[DetailRequest alloc] initWithRequestModel:self.request];
+    [detailRequest startWithCompletionBlockWithSuccess:^(YTKBaseRequest *request) {
+        id response = [request responseJSONObject];
+        NSLog(@"%@",response);
+    } failure:^(YTKBaseRequest *request) {
+        NSLog(@"错误");
+    }];
 }
 #pragma mark - TextFieldDelegate
 - (void)textFieldDidEndEditing:(UITextField *)textField

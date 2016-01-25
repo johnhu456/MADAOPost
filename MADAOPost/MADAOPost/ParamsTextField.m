@@ -27,7 +27,7 @@
     UILabel *tipLabel = [[UILabel alloc] init];
     tipLabel.text = text;
     tipLabel.font = FH_FONT_THIN_WITH_SIZE(14);
-    tipLabel.frame = CGRectMake(0, 0, 60, HEIGHT_NORMAL);
+    tipLabel.frame = CGRectMake(15, 0, 60, HEIGHT_NORMAL);
     self.leftView = tipLabel;
     self.leftViewMode = UITextFieldViewModeAlways;
     
