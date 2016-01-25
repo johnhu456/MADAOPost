@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RequestCollection (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *collectionName;
+@property (nullable, nonatomic, retain) NSString *collectionBaseUrl;
 @property (nullable, nonatomic, retain) NSNumber *collectionID;
 @property (nullable, nonatomic, retain) NSSet<SingleRequest *> *collection_requests;
 

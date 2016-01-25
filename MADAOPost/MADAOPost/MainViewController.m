@@ -16,8 +16,11 @@
 #import <MagicalRecord/MagicalRecord.h>
 #import "DataManager.h"
 
-@interface MainViewController ()<FHExpandTableViewDelegate>
-/**数据数组*/
+@interface MainViewController ()<FHExpandTableViewDelegate,CollectionSetVCDelegate>
+{
+    NSArray *_collections;
+}
+/**数据数组(用来Expand)*/
 @property (nonatomic, strong) NSMutableArray *collectionArray;
 /**TableView*/
 @property (nonatomic, strong) FHExpandTableView *expandTableView;
@@ -34,42 +37,41 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [RequestCollection MR_truncateAll];
     [self findRequestCollection];
+    [self setupExpandTableView];
     
 }
-
 - (void)findRequestCollection
 {   /**从数据库中查找请求合集,按升序排列*/
-    NSArray *collectionArray = [[RequestCollection MR_findAllSortedBy:@"collectionID" ascending:YES] mutableCopy];
-    self.collectionArray = [[NSMutableArray alloc] initWithCapacity:collectionArray.count];
+    _collections = [[RequestCollection MR_findAllSortedBy:@"collectionID" ascending:YES] copy];
+    self.collectionArray = [[NSMutableArray alloc] initWithCapacity:_collections.count];
     /**为空情况下*/
-//    if (collectionArray.count == 0) {
+    if (_collections.count == 0) {
         self.collectionArray = [NSMutableArray new];
         /**创建一个空的Collection*/
         RequestCollection *newCollection = [RequestCollection MR_createEntity];
         newCollection.collectionName = @"New Collection";
-        newCollection.collectionID = 0;
+        newCollection.collectionID = [NSNumber numberWithInt:0];
 //==========================================================
 #warning todo
-        SingleRequest *requestAttay = [SingleRequest MR_findFirst];
-        [newCollection addCollection_requestsObject:requestAttay];
         [[self objectContext] MR_saveToPersistentStoreAndWait];
         /**数据包装*/
         NSArray *tempArray = [DataManager sortedArrayBySortNSSet:newCollection.collection_requests withKeys:@[@"requestID"] ascending:YES];
         tempArray = [DataManager expendArray:tempArray withObject:newCollection atIndex:0];
         [self.collectionArray addObject:tempArray];
-//    }
-//    else
-//    {
-//        for (RequestCollection *collection in collectionArray) {
-//            /**获取Collection下Request数组*/
-//            NSArray *requestArray = [DataManager sortedArrayBySortNSSet:collection.collection_requests withKeys:@[@"requestID"] ascending:YES];
-//            /**与标题进行打包*/
-//            NSArray *newRequestArray = [DataManager expendArray:requestArray withObject:collection.collectionName atIndex:0];
-//            [self.collectionArray addObject:newRequestArray];
-//        }
-//    }
-    [self setupExpandTableView];
+        _collections = [NSArray arrayWithObject:newCollection];
+    }
+    else
+    {
+        for (RequestCollection *collection in _collections) {
+            /**获取Collection下Request数组*/
+            NSArray *requestArray = [DataManager sortedArrayBySortNSSet:collection.collection_requests withKeys:@[@"requestID"] ascending:YES];
+            /**数据包装*/
+            NSArray *newRequestArray = [DataManager expendArray:requestArray withObject:collection atIndex:0];
+            [self.collectionArray addObject:newRequestArray];
+        }
+    }
 }
 - (void)setupExpandTableView
 {
@@ -90,9 +92,11 @@
     UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
-    
+    collectionSetVC.delegate = self;
+    collectionSetVC.collection = _collections[indexPath.row];
     [self.navigationController pushViewController:collectionSetVC animated:YES];
 }
+/**每一个Cell的标题描述*/
 - (NSString *)descriptionForRowAtIndexPath:(NSIndexPath *)indexPath withObj:(id)obj;
 {
     if(indexPath.row == 0)
@@ -110,6 +114,16 @@
         }
     }
     return [NSString stringWithFormat:@"%@",[obj class]];
+}
+#pragma mark - CollectionVCDelegate
+- (void)mainVCNeedReload:(BOOL)reload
+{
+    if (reload) {
+        [self findRequestCollection];
+        [self.expandTableView updateDataWithArray:self.collectionArray];
+    }
+
+
 }
 /*
 #pragma mark - Navigation

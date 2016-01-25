@@ -28,4 +28,5 @@
  */
 @property (nonatomic, strong) NSArray *dataArray;
 
+- (void)updateDataWithArray:(NSArray *)array;
 @end

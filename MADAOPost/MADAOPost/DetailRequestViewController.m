@@ -69,8 +69,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *tfUrl;
 @property (nonatomic, strong) NSNumber *method;
 
-/**请求模型*/
-@property (nonatomic, strong, readwrite) SingleRequest *request;
 /**参数数组*/
 @property (nonatomic, strong) NSMutableArray *argumentsMutaArray;
 @end
@@ -106,7 +104,7 @@ static NSString *reuseID = @"paramsCell";
 #warning need to change
 - (SingleRequest *)getCurrentRequest
 {
-    return [SingleRequest MR_findFirst];
+    return self.request;
 }
 /**request初始化*/
 - (void)createRequest
@@ -164,10 +162,10 @@ static NSString *reuseID = @"paramsCell";
     /**设置本地字典数组内容*/
     for (int i = 0; i<self.argumentsMutaArray.count; i ++) {
         ParamsTableViewCell *paramsCell = [self.mainTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if(paramsCell.ptfKey.text != nil){
+        if(paramsCell.ftfKey.textField.text != nil){
             NSMutableDictionary *dic = self.argumentsMutaArray[i];
-            [dic setValue:paramsCell.ptfKey.text forKey:@"key"];
-            [dic setValue:paramsCell.ptfValue.text forKey:@"value"];
+            [dic setValue:paramsCell.ftfKey.textField.text forKey:@"key"];
+            [dic setValue:paramsCell.ftfValue.textField.text forKey:@"value"];
             [dic setValue:[NSNumber numberWithInt:i] forKey:@"argumentID"];
         }
     }
@@ -208,8 +206,8 @@ static NSString *reuseID = @"paramsCell";
     if (cell == nil) {
         cell = [[ParamsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    cell.ptfKey.text = self.argumentsMutaArray[indexPath.row][@"key"];
-    cell.ptfValue.text = self.argumentsMutaArray[indexPath.row][@"value"];
+    cell.ftfKey.textField.text = self.argumentsMutaArray[indexPath.row][@"key"];
+    cell.ftfValue.textField.text = self.argumentsMutaArray[indexPath.row][@"value"];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

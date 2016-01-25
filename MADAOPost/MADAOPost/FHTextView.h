@@ -47,9 +47,10 @@ typedef enum : NSUInteger {
  *  @return 
  */
 - (instancetype)initWithRectTypeTip:(NSString *)tip
-                placeholder:(NSString *)placeholder
-                buttonTitle:(NSString *)title
-                       type:(FHTextKeyboardType)type;
+                        placeholder:(NSString *)placeholder
+                        buttonTitle:(NSString *)title
+                             height:(CGFloat)height
+                               type:(FHTextKeyboardType)type;
 /**
  *  线式输入框，如下：
  *  标签 ____________________
@@ -63,6 +64,7 @@ typedef enum : NSUInteger {
 - (instancetype)initWithLineTypeTip:(NSString *)tip
                         placeHolder:(NSString *)placeholder
                           lineColor:(UIColor *)color
+                               size:(CGSize)size
                                type:(FHTextKeyboardType)type;
 
 NS_ASSUME_NONNULL_END

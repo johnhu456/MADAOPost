@@ -29,11 +29,7 @@
         for (NSInteger section = 0; section < numberOfSections; section++)
         {
             NSArray *rowArrayInSection = self.dataArray[section];
-            //            NSInteger numberOfRowsInSection = rowArrayInSection.count;
-            
-            NSMutableArray *rows = [NSMutableArray array];
-            //            for (NSInteger row = 0; row < numberOfRowsInSection; row++)
-            //            {
+
             NSInteger numberOfSubrows = rowArrayInSection.count ;
             /**能否展开*/
             BOOL isExpandedInitially = numberOfSubrows > 1 ? YES : NO;
@@ -42,9 +38,7 @@
             NSMutableDictionary *rowInfo = [NSMutableDictionary dictionaryWithObjects:@[@(isExpandedInitially),@(isExpanded),@(numberOfSubrows)]
                                                                               forKeys:@[CAN_EXPAND,DID_EXPAND,NUM_OF_SUBROWS]];
             
-            [rows addObject:rowInfo];
-            //            }
-            [_indexPathInfoDic setObject:rows forKey:@(section)];
+            [_indexPathInfoDic setObject:rowInfo forKey:@(section)];
         }
     }
     return _indexPathInfoDic;
@@ -108,28 +102,23 @@
 {
     NSInteger totalExpandedSubrows = 0;
     
-    NSArray *rows = self.indexPathInfoDic[@(section)];
-    for (id row in rows)
+    NSDictionary *rowInfo = self.indexPathInfoDic[@(section)];
+    if ([rowInfo[DID_EXPAND] boolValue] == YES) {
+         totalExpandedSubrows += [rowInfo[NUM_OF_SUBROWS] integerValue];
+    }
+    else
     {
-        if ([row[DID_EXPAND] boolValue] == YES)
-        {
-            totalExpandedSubrows += [row[NUM_OF_SUBROWS] integerValue];
-        }
-        else{
-            totalExpandedSubrows += 1;
-        }
+        totalExpandedSubrows += 1;
     }
     return totalExpandedSubrows;
 }
 /**将某个Cell展开*/
 - (BOOL)expendCellAtIndex:(NSIndexPath *)indexPath
 {
-    NSMutableArray *rowArray = self.indexPathInfoDic[@(indexPath.section)];
-    NSMutableDictionary *subRowDic = rowArray[indexPath.row];
+    NSMutableDictionary *subRowDic = self.indexPathInfoDic[@(indexPath.section)];
     BOOL expend = [subRowDic[DID_EXPAND] boolValue];
     BOOL canExpend = [subRowDic[CAN_EXPAND] boolValue];
     if (canExpend) {
-        NSLog(@"haha:%@",subRowDic[DID_EXPAND]);
         NSLog(@"expend:%@",expend ? @"1":@"0");
         if (expend) {
             [subRowDic setValue:@(NO) forKey:DID_EXPAND];
@@ -146,8 +135,31 @@
 - (id)getDataAtIndex:(NSIndexPath *)indexPath
 {
     id obj = self.dataArray[indexPath.section][indexPath.row];
-    NSLog(@"get:%@",obj);
     return obj;
+}
+
+#pragma mark - PublicMethod
+- (void)updateDataWithArray:(NSArray *)array
+{
+    self.dataArray = array;
+    /**已经展开的Section数组*/
+    NSMutableArray *expendedSectionArray = [NSMutableArray new];
+    for (id key in self.indexPathInfoDic.allKeys) {
+        if ([key isKindOfClass:[NSNumber class]]) {
+            NSDictionary *sectionInfo = self.indexPathInfoDic[key];
+            if ([sectionInfo[DID_EXPAND] boolValue]) {
+                //当前已经展开
+                [expendedSectionArray addObject:key];
+            }
+        }
+        else
+            return;
+    }
+    self.indexPathInfoDic = nil;
+    for (NSNumber *key in expendedSectionArray) {
+        [self expendCellAtIndex:[NSIndexPath indexPathForRow:0 inSection:[key integerValue]]];
+        [self reloadData];
+    }
 }
 //- (NSInteger)numberOfSubRowsInIndex:(NSIndexPath *)indexPath
 //{

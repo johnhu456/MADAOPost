@@ -14,6 +14,7 @@
 @implementation RequestCollection (CoreDataProperties)
 
 @dynamic collectionName;
+@dynamic collectionBaseUrl;
 @dynamic collectionID;
 @dynamic collection_requests;
 - (void)addCollection_requestsObject:(SingleRequest *)value

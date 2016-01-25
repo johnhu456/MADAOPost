@@ -22,6 +22,8 @@
 
 #define WEAK_SELF __weak typeof(self) weakSelf = self 
 
+#define FH_ColorWith(r,g,b,a) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:a]
+
 @interface FHTool : NSObject
 
 /**获取当前Window对象*/

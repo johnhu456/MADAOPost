@@ -8,19 +8,27 @@
 
 #import "FHTextView.h"
 #import <Masonry.h>
-#define NORMAL_HEIGHT 45
+#define NORMAL_HEIGHT _height
 #define SCALE 0.618
 
 const CGFloat lineWidth = 0.05;
-
+@interface FHTextView()
+{
+    CGFloat _lineTFWidth;
+    CGFloat _height;
+    UIColor *_color;
+}
+@end
 @implementation FHTextView
-- (instancetype)initWithTip:(NSString *)tip
-                placeholder:(NSString *)placeholder
-                buttonTitle:(NSString *)title
-                       type:(FHTextKeyboardType)type
+- (instancetype)initWithRectTypeTip:(NSString *)tip
+                        placeholder:(NSString *)placeholder
+                        buttonTitle:(NSString *)title
+                             height:(CGFloat)height
+                               type:(FHTextKeyboardType)type
 {
     UIWindow *window=[[UIApplication sharedApplication]windows][0];
     if (self=[super initWithFrame:(CGRect){CGPointZero, {window.frame.size.width, NORMAL_HEIGHT}}]) {
+        _height = height;
         //控件初始化
         self.backgroundColor=[UIColor whiteColor];
         /**组件部分*/
@@ -150,44 +158,32 @@ const CGFloat lineWidth = 0.05;
     [self.lblTip mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
-        make.leading.equalTo(self.mas_leading);
-        make.width.mas_equalTo(NORMAL_HEIGHT * 1.5);
+        make.leading.equalTo(self.mas_leading).with.offset(15.f);
+        make.width.mas_equalTo(NORMAL_HEIGHT * 2);
     }];
     [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.leading.equalTo(self.lblTip.mas_trailing);
-        make.trailing.equalTo(self.mas_trailing);
+        make.width.mas_equalTo(_lineTFWidth - 2 * NORMAL_HEIGHT * 2);
     }];
-}
-- (void)drawUnderLineWithColor:(UIColor *)color
-{
-    /**绘制下划线*/
-    UIBezierPath *underLine = [UIBezierPath bezierPath];
-    CGPoint startPoint = CGPointMake(NORMAL_HEIGHT * 1.5 + 2,NORMAL_HEIGHT - 2);
-    CGPoint endPoint = CGPointMake(self.frame.size.width, startPoint.y);
-    [underLine moveToPoint:startPoint];
-    [underLine addLineToPoint:endPoint];
-    
-    CAShapeLayer *underLineLayer = [[CAShapeLayer alloc] init];
-    underLineLayer.path = underLine.CGPath;
-    underLineLayer.strokeColor = color.CGColor;
-    underLineLayer.fillColor = [UIColor clearColor].CGColor;
-    underLineLayer.lineWidth = 1.f;
-    [self.layer addSublayer:underLineLayer];
 }
 - (instancetype)initWithLineTypeTip:(NSString *)tip
                         placeHolder:(NSString *)placeholder
                           lineColor:(UIColor *)color
+                               size:(CGSize)size
                                type:(FHTextKeyboardType)type
 {
-    UIWindow *window=[[UIApplication sharedApplication]windows][0];
+//    UIWindow *window=[[UIApplication sharedApplication]windows][0];
     if (self = [super init]) {
-        self.frame = CGRectMake((1- SCALE)/2.f * window.frame.size.width, 0 , window.frame.size.width * SCALE, NORMAL_HEIGHT);
+        _lineTFWidth = size.width;
+        _height = size.height;
+        _color = color;
+        self.backgroundColor = [UIColor whiteColor];
+        self.frame = CGRectMake(0, 0 ,_lineTFWidth, NORMAL_HEIGHT);
         [self createTipLabelWithTip:tip];
-        [self createTextFieldWithPlaceHolder:placeholder textColor:color andKeyboardType:type];
+        [self createTextFieldWithPlaceHolder:placeholder textColor:[UIColor blackColor] andKeyboardType:type];
         [self layoutWithLineType];
-        [self drawUnderLineWithColor:color];
     }
     return self;
 }
@@ -200,12 +196,19 @@ const CGFloat lineWidth = 0.05;
 {
     [self.delegate buttonCustomeOnClicked:button];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)drawRect:(CGRect)rect
+{
+    if (_color) {
+        UIBezierPath *underLine = [UIBezierPath bezierPath];
+        CGPoint startPoint = CGPointMake(NORMAL_HEIGHT * 2 + 2,NORMAL_HEIGHT - 2);
+        CGPoint endPoint = CGPointMake(startPoint.x + _lineTFWidth - 30.f - NORMAL_HEIGHT * 2, startPoint.y);
+        [underLine moveToPoint:startPoint];
+        [underLine addLineToPoint:endPoint];
+        underLine.lineWidth = 0.5f;
+        [_color setStroke];
+        [[UIColor clearColor] setFill];
+        [underLine stroke];
+    }
 }
-*/
 
 @end
