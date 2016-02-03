@@ -69,6 +69,8 @@ const CGFloat lineWidth = 0.05;
     self.textField.textColor = color;
     self.textField.borderStyle = UITextBorderStyleNone;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.textField.autocapitalizationType = NO;
+    self.textField.autocorrectionType = NO;
     self.textField.placeholder = placeHolder;
     [self.textField setValue:[UIFont systemFontOfSize:15] forKeyPath:@"_placeholderLabel.font"];
     [self.textField addTarget:self
@@ -165,7 +167,7 @@ const CGFloat lineWidth = 0.05;
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.leading.equalTo(self.lblTip.mas_trailing);
-        make.width.mas_equalTo(_lineTFWidth - 2 * NORMAL_HEIGHT * 2);
+        make.width.mas_equalTo(_lineTFWidth - 2 * NORMAL_HEIGHT - 30.f);
     }];
 }
 - (instancetype)initWithLineTypeTip:(NSString *)tip

@@ -11,6 +11,8 @@
 @protocol FHExpandTableViewDelegate <NSObject>
 /**选中某行*/
 - (void)expandTableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+/**选中某行AccessoryButton*/
+- (void)expandTableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath;
 /**某行的数据显示*/
 - (NSString *)descriptionForRowAtIndexPath:(NSIndexPath *)indexPath withObj:(id)obj;
 @end

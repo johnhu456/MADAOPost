@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface FHExpandTableViewCell : UITableViewCell
+
 @property (nonatomic, assign) BOOL expand;
+
 @end

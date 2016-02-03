@@ -16,7 +16,7 @@
 #import <Masonry.h>
 #import <MagicalRecord/MagicalRecord.h>
 
-@interface CollectionSetViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface CollectionSetViewController ()<UITableViewDataSource,UITableViewDelegate,DetailRequestVCDelegate>
 {
     /**首页数据是否需要更新*/
     BOOL _reload;
@@ -77,7 +77,8 @@
 {
     self.requestsMutaArray = [[DataManager sortedArrayBySortNSSet:self.collection.collection_requests withKeys:@[@"requestID"] ascending:YES] mutableCopy];
 }
-#pragma mark - TableViewDelegate
+
+#pragma mark - TableViewDataSourceAndDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -93,7 +94,7 @@
         requestCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"requestCell"];
     }
     SingleRequest *currentRequest = self.requestsMutaArray[indexPath.row];
-    requestCell.textLabel.text = [NSString stringWithFormat:@"%@",currentRequest.requestID];
+    requestCell.textLabel.text = [NSString stringWithFormat:@"%@",currentRequest.apiUrl];
     return requestCell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,8 +104,28 @@
     UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DetailRequestViewController *requestDetailVC = [board instantiateViewControllerWithIdentifier:@"DetailRequestVC"];
     requestDetailVC.request = selectedRequest;
+    requestDetailVC.delegate = self;
     [self.navigationController pushViewController:requestDetailVC animated:YES];
 }
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //本地修改
+    SingleRequest *reomveRequest = self.requestsMutaArray[indexPath.row];
+    [self.requestsMutaArray removeObjectAtIndex:indexPath.row];
+    /**解除关联*/
+    if(reomveRequest != nil)
+    {
+        [self.collection removeCollection_requestsObject:reomveRequest];
+        [reomveRequest MR_deleteEntity];
+        [[self objectContext] MR_saveToPersistentStoreAndWait];
+    }
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 #pragma mark - WidgetsAction
 - (IBAction)addRequestButtonOnClicked:(UIBarButtonItem *)sender {
 
@@ -130,6 +151,13 @@
 }
 - (void)saveButtonOnClicked:(UIBarButtonItem *)button
 {
+    if ([self.ftfBaseUrl.textField.text containsString:@" "]) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"Base Url不能包含空格" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        return;
+    }
     WEAK_SELF;
     [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
         RequestCollection *collection = [weakSelf.collection MR_inContext:localContext];
@@ -138,6 +166,13 @@
     }];
     _reload = YES;
 }
-
+#pragma  mark - DetailRequestVCDelegate
+- (void)collectionVCNeedReload:(BOOL)reload
+{
+    if (reload) {
+        [self getCollectionRequest];
+        [self.mainTableView reloadData];
+    }
+}
 
 @end

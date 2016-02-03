@@ -63,11 +63,14 @@
 
 
 @interface DetailRequestViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate>
-
+{
+    BOOL _reload;
+}
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
 @property (weak, nonatomic) IBOutlet UIPickerView *typePicker;
 @property (weak, nonatomic) IBOutlet UITextField *tfUrl;
 @property (nonatomic, strong) NSNumber *method;
+
 
 /**参数数组*/
 @property (nonatomic, strong) NSMutableArray *argumentsMutaArray;
@@ -80,15 +83,19 @@ static NSString *reuseID = @"paramsCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createRequest];
-//    [SingleRequest MR_truncateAll];
     self.tfUrl.delegate = self;
+    _reload = NO;
     
     YTKNetworkConfig *networkConfig = [YTKNetworkConfig sharedInstance];
-    [networkConfig setBaseUrl:@"https://192.168.0.12:8443"];
+    [networkConfig setBaseUrl:self.request.request_collection.collectionBaseUrl];
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     securityPolicy.allowInvalidCertificates = YES;
     securityPolicy.validatesDomainName = NO;
     networkConfig.securityPolicy = securityPolicy;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.delegate collectionVCNeedReload:_reload];
 }
 /**DataManager单例*/
 - (DataManager *)dataManager
@@ -110,19 +117,19 @@ static NSString *reuseID = @"paramsCell";
 - (void)createRequest
 {
     SingleRequest *request = [self getCurrentRequest];
-    if (request == nil) {
-#warning need to change
-        NSDictionary *dic = @{@"baseUrl":@"https://192.168.0.12:8443",
-                              @"method":@(0),
-                              @"apiUrl":@"/api/user/login"
-        };
-        /**如果没有，则创建新的实体*/
-        request = [SingleRequest MR_createEntity];
-        request.baseUrl = [DataParser stringInDictionary:dic forKey:@"baseUrl"];
-        request.method = dic[@"method"];
-        request.apiUrl = [DataParser stringInDictionary:dic forKey:@"apiUrl"];
-        [[self objectContext] MR_saveToPersistentStoreAndWait];
-    }
+//    if (request == nil) {
+//#warning need to change
+//        NSDictionary *dic = @{@"baseUrl":@"https://192.168.0.12:8443",
+//                              @"method":@(0),
+//                              @"apiUrl":@"/api/user/login"
+//        };
+//        /**如果没有，则创建新的实体*/
+//        request = [SingleRequest MR_createEntity];
+//        request.baseUrl = [DataParser stringInDictionary:dic forKey:@"baseUrl"];
+//        request.method = dic[@"method"];
+//        request.apiUrl = [DataParser stringInDictionary:dic forKey:@"apiUrl"];
+//        [[self objectContext] MR_saveToPersistentStoreAndWait];
+//    }
     self.request = request;
     
     /**request 里参数集需要转换成array进行排序*/
@@ -152,8 +159,6 @@ static NSString *reuseID = @"paramsCell";
 {
     self.tfUrl.text = self.request.apiUrl;
     [self.typePicker selectRow:[self.request.method integerValue] inComponent:0 animated:YES];
-    NSLog(@"%@",self.request.apiUrl);
-    NSLog(@"=====%@",[SingleRequest MR_findAll]);
     [self.mainTableView reloadData];
 }
 /**对Request对象进行保存*/
@@ -174,12 +179,17 @@ static NSString *reuseID = @"paramsCell";
         weakSelf.request.apiUrl = weakSelf.tfUrl.text;
         weakSelf.request.method = weakSelf.method;
     }];
+
+    NSArray *argumentArray = [DataManager sortedArrayBySortNSSet:self.request.request_arguments withKeys:@[@"argumentID"] ascending:YES];
+    NSLog(@"%@",argumentArray);
     for (int i =0; i < self.argumentsMutaArray.count; i++) {
-        Arguments *argument = [Arguments MR_findFirstByAttribute:@"argumentID" withValue:@(i)];
         NSDictionary *argumentDic = self.argumentsMutaArray[i];
-        if (argument == nil) {
+        Arguments *argument;
+        if (argumentArray.count >= (i + 1)) {
+            //防止越界
+            argument= argumentArray[i];
+        }else
             argument = [Arguments MR_createEntity];
-        }
         [MagicalRecord saveWithBlockAndWait:^(NSManagedObjectContext *localContext) {
             argument.key = [DataParser stringInDictionary:argumentDic forKey:@"key"];
             argument.argumentID = [NSNumber numberWithInt:i];
@@ -188,8 +198,40 @@ static NSString *reuseID = @"paramsCell";
         /**设置关联*/
         [[self getCurrentRequest] addRequest_argumentsObject:argument];
     };
-    /**对结果进行保存*/
     [[self objectContext] MR_saveToPersistentStoreAndWait];
+    _reload = YES;
+}
+- (void)noSaveRequestInCoreData
+{
+    /**设置本地字典数组内容*/
+    for (int i = 0; i<self.argumentsMutaArray.count; i ++) {
+        ParamsTableViewCell *paramsCell = [self.mainTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        if(paramsCell.ftfKey.textField.text != nil){
+            NSMutableDictionary *dic = self.argumentsMutaArray[i];
+            [dic setValue:paramsCell.ftfKey.textField.text forKey:@"key"];
+            [dic setValue:paramsCell.ftfValue.textField.text forKey:@"value"];
+            [dic setValue:[NSNumber numberWithInt:i] forKey:@"argumentID"];
+        }
+    }
+    self.request.apiUrl = self.tfUrl.text;
+    self.request.method = self.method;
+    NSArray *argumentArray = [DataManager sortedArrayBySortNSSet:self.request.request_arguments withKeys:@[@"argumentID"] ascending:YES];
+    NSLog(@"%@",argumentArray);
+    for (int i =0; i < self.argumentsMutaArray.count; i++) {
+        NSDictionary *argumentDic = self.argumentsMutaArray[i];
+        Arguments *argument;
+        if (argumentArray.count >= (i + 1)) {
+            //防止越界
+            argument= argumentArray[i];
+        }else
+            argument = [Arguments MR_createEntity];
+        argument.key = [DataParser stringInDictionary:argumentDic forKey:@"key"];
+        argument.argumentID = [NSNumber numberWithInt:i];
+        argument.value = [DataParser stringInDictionary:argumentDic forKey:@"value"];
+        /**设置关联*/
+        [[self getCurrentRequest] addRequest_argumentsObject:argument];
+    };
+    /**不在CoreData中进行保存*/
 }
 #pragma mark - UITableViewDataSource andDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -226,10 +268,10 @@ static NSString *reuseID = @"paramsCell";
 {
     WEAK_SELF;
     /**先对本地字典进行修改*/
-    [self.argumentsMutaArray removeObjectAtIndex:indexPath.row];
-
     /**解除关联*/
-    Arguments *reomveArgument = [Arguments MR_findFirstByAttribute:@"argumentID" withValue:@(indexPath.row)];
+    Arguments *reomveArgument = self.argumentsMutaArray[indexPath.row];
+    [self.argumentsMutaArray removeObjectAtIndex:indexPath.row];
+    
     if(reomveArgument != nil)
     {
         [weakSelf.request removeRequest_argumentsObject:reomveArgument];
@@ -259,6 +301,7 @@ static NSString *reuseID = @"paramsCell";
 {
     self.method = [NSNumber numberWithInteger:row];
 }
+
 #pragma mark — Add Params
 - (IBAction)addParamsButtonOnClicked:(UIBarButtonItem *)sender {
 
@@ -275,12 +318,31 @@ static NSString *reuseID = @"paramsCell";
                                                                   inSection:0]
                               atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
+
+#pragma mark - WidgetsAction
 - (IBAction)saveButtonOnClicked:(id)sender {
-    [self saveRequestInData];
+    if ([self checkUrl]) {
+        [self saveRequestInData];
+    }
 }
 - (IBAction)sendButtonOnClicked:(id)sender {
-    [self saveRequestInData];
-    [self setupRequest];
+    if ([self checkUrl]) {
+        [self noSaveRequestInCoreData];
+        [self setupRequest];
+    }
+}
+- (BOOL)checkUrl
+{
+    /**判断URL是否含有空格*/
+    if([self.tfUrl.text containsString:@" "])
+    {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"Api Url不能包含空格" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        return NO;
+    }
+    return YES;
 }
 - (void)setupRequest
 {

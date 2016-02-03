@@ -88,13 +88,29 @@
 //    DetailRequestViewController *detailRequestVC = [board instantiateViewControllerWithIdentifier:@"DetailRequestVC"];
 //    
 //    [self.navigationController pushViewController:detailRequestVC animated:YES];
-
-    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
-    collectionSetVC.delegate = self;
-    collectionSetVC.collection = _collections[indexPath.row];
-    [self.navigationController pushViewController:collectionSetVC animated:YES];
+}
+- (void)expandTableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0 ) {
+        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
+        collectionSetVC.delegate = self;
+        NSLog(@"%@",_collectionArray);
+        NSLog(@"%@",self.collectionArray);
+        collectionSetVC.collection = _collections[indexPath.section];
+        [self.navigationController pushViewController:collectionSetVC animated:YES];
+}
+    
+//    if (indexPath.row != 0) {
+//        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    
+//        CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
+//        collectionSetVC.delegate = self;
+//        collectionSetVC.collection = _collections[indexPath.row];
+//        [self.navigationController pushViewController:collectionSetVC animated:YES];
+//    }
 }
 /**每一个Cell的标题描述*/
 - (NSString *)descriptionForRowAtIndexPath:(NSIndexPath *)indexPath withObj:(id)obj;

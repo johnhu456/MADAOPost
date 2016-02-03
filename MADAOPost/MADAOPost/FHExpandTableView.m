@@ -8,11 +8,17 @@
 
 #import "FHExpandTableView.h"
 #import "FHExpandTableViewCell.h"
+#import "FHExpandNormalTableViewCell.h"
 
 #define NUM_OF_SUBROWS @"numOfSubRows"
 #define CAN_EXPAND @"canExpand"
 #define DID_EXPAND @"didExpand"
 
+typedef enum : NSUInteger {
+    CellStateExpand = 0,
+    CellStateUnExpand,
+    CellStateFail
+} CellState;
 @interface FHExpandTableView()<UITableViewDelegate,UITableViewDataSource>
 /**数据信息字典*/
 @property (nonatomic, strong) NSMutableDictionary *indexPathInfoDic;
@@ -33,7 +39,7 @@
             NSInteger numberOfSubrows = rowArrayInSection.count ;
             /**能否展开*/
             BOOL isExpandedInitially = numberOfSubrows > 1 ? YES : NO;
-            /**是否已经展开*/
+            /**是否展开*/
             BOOL isExpanded = NO;
             NSMutableDictionary *rowInfo = [NSMutableDictionary dictionaryWithObjects:@[@(isExpandedInitially),@(isExpanded),@(numberOfSubrows)]
                                                                               forKeys:@[CAN_EXPAND,DID_EXPAND,NUM_OF_SUBROWS]];
@@ -63,41 +69,82 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FHExpandTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuse"];
-    if (cell == nil) {
-        cell = [[FHExpandTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"reuse"];
+    FHExpandTableViewCell *collectionCell = [tableView dequeueReusableCellWithIdentifier:@"collectionCell"];
+    FHExpandNormalTableViewCell *normalCell = [tableView dequeueReusableCellWithIdentifier:@"normalCell"];
+    if (collectionCell == nil) {
+        collectionCell = [[FHExpandTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"collectionCell"];
+    }
+    if (normalCell == nil) {
+        normalCell = [[FHExpandNormalTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"normalCell"];
     }
     if ([self.expandDelegate respondsToSelector:@selector(descriptionForRowAtIndexPath:withObj:)]) {
         NSString *desStr = [self.expandDelegate descriptionForRowAtIndexPath:indexPath withObj:[self getDataAtIndex:indexPath]];
-        cell.textLabel.text = desStr;
+        collectionCell.textLabel.text = desStr;
+        normalCell.textLabel.text = desStr;
     }
     else
     {
         NSString *str = [self getDataAtIndex:indexPath];
     //    NSString *title = self.dataArray[indexPath.section][indexPath.row][0];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",str];
+        collectionCell.textLabel.text = [NSString stringWithFormat:@"%@",str];
     
     // Configure the cell...
     }
-    return cell;
+    if (indexPath.row == 0) {
+        return collectionCell;
+    }
+    else
+        return normalCell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0)  //除第一个Cell之外不能进行展开动作
-    {
-        if ([self.expandDelegate respondsToSelector:@selector(expandTableView:didSelectRowAtIndexPath:)]) {
+    if ([self.expandDelegate respondsToSelector:@selector(expandTableView:didSelectRowAtIndexPath:)]) {
             [self.expandDelegate expandTableView:tableView didSelectRowAtIndexPath:indexPath];
-        }
-        if ([self expendCellAtIndex:indexPath]) {
-            [self reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
-        }
     }
-    else
-    {
-        
+    CellState currentState = [self expendCellAtIndex:indexPath];
+    switch (currentState) {
+        case CellStateFail:
+            return;
+            break;
+        case CellStateExpand:
+        {
+            [self beginUpdates];
+            NSMutableArray *waitChange = [[NSMutableArray alloc] init];
+            for (int i= 0 ; i < [self numberOfExpandedSubrowsInSection:indexPath.section]; i++) {
+                if (i != 0) {
+                    [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+                }
+            }
+            [self insertRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self endUpdates];
+ 
+        }
+            break;
+        case CellStateUnExpand:
+        {
+            [self beginUpdates];
+            NSMutableArray *waitChange = [[NSMutableArray alloc] init];
+            for (int i= 0 ; i < [self numberOfTotalExpandedSubrowsInSection:indexPath.section]; i++) {
+                if (i != 0) {
+                    [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+                }
+            }
+            [self deleteRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationTop];
+            [self endUpdates];
+
+        }
+            break;
+        default:
+            break;
     }
 }
-/**返回Section中总行数（包括展开）*/
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.expandDelegate respondsToSelector:@selector(expandTableView:accessoryButtonTappedForRowWithIndexPath:)]) {
+            [self.expandDelegate expandTableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+        }
+}
+/**返回Section中总行数（当前状态）*/
 - (NSInteger)numberOfExpandedSubrowsInSection:(NSInteger)section
 {
     NSInteger totalExpandedSubrows = 0;
@@ -112,24 +159,38 @@
     }
     return totalExpandedSubrows;
 }
+/**返回Section中总行数（包括展开）*/
+- (NSInteger)numberOfTotalExpandedSubrowsInSection:(NSInteger)section
+{
+    NSInteger totalExpandedSubrows = 0;
+    
+    NSDictionary *rowInfo = self.indexPathInfoDic[@(section)];
+    totalExpandedSubrows += [rowInfo[NUM_OF_SUBROWS] integerValue];
+
+    return totalExpandedSubrows;
+}
 /**将某个Cell展开*/
-- (BOOL)expendCellAtIndex:(NSIndexPath *)indexPath
+- (CellState)expendCellAtIndex:(NSIndexPath *)indexPath
 {
     NSMutableDictionary *subRowDic = self.indexPathInfoDic[@(indexPath.section)];
+    NSLog(@"before:%@",subRowDic);
+
     BOOL expend = [subRowDic[DID_EXPAND] boolValue];
     BOOL canExpend = [subRowDic[CAN_EXPAND] boolValue];
     if (canExpend) {
-        NSLog(@"expend:%@",expend ? @"1":@"0");
+        FHExpandTableViewCell *cell = [self cellForRowAtIndexPath:indexPath];
         if (expend) {
             [subRowDic setValue:@(NO) forKey:DID_EXPAND];
+            cell.expand = NO;
+            return CellStateUnExpand;
         }
         else{
             [subRowDic setValue:@(YES) forKey:DID_EXPAND];
+            cell.expand = YES;
+            return CellStateExpand;
         }
-        NSLog(@"%@",subRowDic);
-        return YES;
     }
-    return NO;
+    return CellStateFail;
 }
 /**获得某行Cell信息*/
 - (id)getDataAtIndex:(NSIndexPath *)indexPath
@@ -161,57 +222,7 @@
         [self reloadData];
     }
 }
-//- (NSInteger)numberOfSubRowsInIndex:(NSIndexPath *)indexPath
-//{
-//    NSInteger numOfSubRows = 0;
-//    NSArray *rows = self.sectionInfoDic[@(indexPath.section)];
-//    NSDictionary *row = rows[indexPath.row];
-//    numOfSubRows = [row[NUM_OF_SUBROWS] integerValue];
-//    return numOfSubRows;
-//}
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 
 

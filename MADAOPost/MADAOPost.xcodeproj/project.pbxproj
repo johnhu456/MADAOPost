@@ -42,6 +42,8 @@
 		E085FB161C4F231800838701 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FB151C4F231800838701 /* MainViewController.m */; };
 		E085FB191C4F540D00838701 /* CollectionSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FB181C4F540D00838701 /* CollectionSetViewController.m */; };
 		E085FB1C1C4F545F00838701 /* FHTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FB1B1C4F545F00838701 /* FHTextView.m */; };
+		E098D5F11C61996F005CAB4E /* FHExpandCellIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */; };
+		E098D5F41C61A01A005CAB4E /* FHExpandNormalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +131,10 @@
 		E085FB181C4F540D00838701 /* CollectionSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionSetViewController.m; sourceTree = "<group>"; };
 		E085FB1A1C4F545F00838701 /* FHTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHTextView.h; sourceTree = "<group>"; };
 		E085FB1B1C4F545F00838701 /* FHTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHTextView.m; sourceTree = "<group>"; };
+		E098D5EF1C61996F005CAB4E /* FHExpandCellIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHExpandCellIndicatorView.h; sourceTree = "<group>"; };
+		E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHExpandCellIndicatorView.m; sourceTree = "<group>"; };
+		E098D5F21C61A01A005CAB4E /* FHExpandNormalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHExpandNormalTableViewCell.h; sourceTree = "<group>"; };
+		E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHExpandNormalTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,10 +340,9 @@
 		E085FB131C4F217100838701 /* FHExpandTableView */ = {
 			isa = PBXGroup;
 			children = (
+				E098D5F51C61A020005CAB4E /* TableViewCell */,
 				E085FB0D1C4F216900838701 /* FHExpandTableView.h */,
 				E085FB0E1C4F216900838701 /* FHExpandTableView.m */,
-				E085FB0F1C4F216900838701 /* FHExpandTableViewCell.h */,
-				E085FB101C4F216900838701 /* FHExpandTableViewCell.m */,
 			);
 			name = FHExpandTableView;
 			sourceTree = "<group>";
@@ -349,6 +354,19 @@
 				E085FB1B1C4F545F00838701 /* FHTextView.m */,
 			);
 			name = CustomWidgets;
+			sourceTree = "<group>";
+		};
+		E098D5F51C61A020005CAB4E /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				E085FB0F1C4F216900838701 /* FHExpandTableViewCell.h */,
+				E085FB101C4F216900838701 /* FHExpandTableViewCell.m */,
+				E098D5F21C61A01A005CAB4E /* FHExpandNormalTableViewCell.h */,
+				E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */,
+				E098D5EF1C61996F005CAB4E /* FHExpandCellIndicatorView.h */,
+				E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */,
+			);
+			name = TableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,6 +558,7 @@
 				E085FB161C4F231800838701 /* MainViewController.m in Sources */,
 				E085FA0E1C47479600838701 /* Foundation+Log.m in Sources */,
 				E085FB1C1C4F545F00838701 /* FHTextView.m in Sources */,
+				E098D5F11C61996F005CAB4E /* FHExpandCellIndicatorView.m in Sources */,
 				E085F9F21C4681CF00838701 /* ParamsTextField.m in Sources */,
 				E085F9B11C46510C00838701 /* AppDelegate.m in Sources */,
 				E085FA811C48E84400838701 /* MADAOPost.xcdatamodeld in Sources */,
@@ -556,6 +575,7 @@
 				E085FAA81C4C77F000838701 /* DataManager.m in Sources */,
 				E085FB191C4F540D00838701 /* CollectionSetViewController.m in Sources */,
 				E085FA791C48D3A200838701 /* GTMBase64.m in Sources */,
+				E098D5F41C61A01A005CAB4E /* FHExpandNormalTableViewCell.m in Sources */,
 				E085FB121C4F216900838701 /* FHExpandTableViewCell.m in Sources */,
 				E085FA0F1C47479600838701 /* UIView+Frame.m in Sources */,
 				E085FABD1C4C90FE00838701 /* SingleRequest.m in Sources */,
