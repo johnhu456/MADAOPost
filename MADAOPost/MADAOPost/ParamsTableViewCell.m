@@ -17,15 +17,14 @@
 }
 @property (nonatomic, strong) UILabel *lblKey;
 @property (nonatomic, strong) UILabel *lblValue;
-
+@property (nonatomic, strong) UIButton *md5Button;
 @end
 @implementation ParamsTableViewCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.ptfKey = [[ParamsTextField alloc] initWithLabelText:@"Key:" andPlaceHolder:@"请输入参数名"];
-//        self.ptfValue = [[ParamsTextField alloc] initWithLabelText:@"Value:" andPlaceHolder:@"请输入值"];
         UIWindow *window = [FHTool getCurrentWindow];
+        
         self.ftfKey = [[FHTextView alloc] initWithLineTypeTip:@"Key:" placeHolder:@"请输入参数名" lineColor:FH_ColorWith(188,187,193,1) size:CGSizeMake(window.width, 30) type:FHTextKeyboardTypeDefault];
         self.ftfValue = [[FHTextView alloc] initWithLineTypeTip:@"Value:" placeHolder:@"请输入值" lineColor: FH_ColorWith(188,187,193,1) size:CGSizeMake(window.width, 30) type:FHTextKeyboardTypeDefault];
         self.selectionStyle = UITableViewCellSelectionStyleNone;

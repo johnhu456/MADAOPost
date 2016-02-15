@@ -13,6 +13,7 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.contentView.backgroundColor = [UIColor lightGrayColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }

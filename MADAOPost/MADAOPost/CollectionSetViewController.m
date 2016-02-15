@@ -134,6 +134,7 @@
     /**增加模型*/
     SingleRequest *request = [SingleRequest MR_createEntityInContext:[self objectContext]];
     request.baseUrl = self.ftfBaseUrl.textField.text;
+    request.apiUrl = @"New Request";
     request.requestID = [NSNumber numberWithInteger:self.requestsMutaArray.count];
     [self.collection addCollection_requestsObject:request];
     [[self objectContext] MR_saveToPersistentStoreAndWait];

@@ -12,7 +12,7 @@
 @protocol DetailRequestVCDelegate <NSObject>
 
 - (void)collectionVCNeedReload:(BOOL)reload;
-
+- (void)mainVCNeedReload:(BOOL)reload;
 @end
 
 @interface DetailRequestViewController : UIViewController

@@ -18,4 +18,4 @@ end
 pod 'YTKNetwork'
 pod 'MagicalRecord'
 pod 'Masonry'
-
+pod 'SWTableViewCell'

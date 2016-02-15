@@ -44,6 +44,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SWTableViewCell.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>YTKNetwork.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,17 +62,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4D04A93E6CEE95E70A43841A392429C7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>53480ED0BE09FF49E34B1702D485CAAB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>79DACA22D36544E145CD32767F649A03</key>
+		<key>718CAA174DA7D346F35E28FFC114AE68</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7B8F8257A28FFD5747B4DD7E35CC97B7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C80A93586AD34EC757BFF440106B2E85</key>
+		<key>B86ED5F5E58EC6F6E207F2130057F2A5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D4A0389F58C3BEAEAED09952A58C2C8B</key>
+		<key>C87556A6EA0481B78FF27C191679EA3D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,7 +97,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FCA317DDFFB2D2C9F3DCB9FBCC207998</key>
+		<key>DC551261BF73E75F5190B03E76EC776B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FB1B5D5CA4D420DCBC5A966F71A5FDB5</key>
 		<dict>
 			<key>primary</key>
 			<true/>

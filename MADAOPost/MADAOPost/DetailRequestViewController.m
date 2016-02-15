@@ -15,6 +15,7 @@
 #import <YTKNetworkConfig.h>
 #import <YTKRequest.h>
 #import <MagicalRecord/MagicalRecord.h>
+#import <SWTableViewCell.h>
 
 @interface DetailRequest : YTKRequest
 @property (nonatomic, weak) SingleRequest *request;
@@ -108,7 +109,6 @@ static NSString *reuseID = @"paramsCell";
     return [DataManager managedObjectContext];
 }
 /**获得当前的Request*/
-#warning need to change
 - (SingleRequest *)getCurrentRequest
 {
     return self.request;
@@ -116,22 +116,6 @@ static NSString *reuseID = @"paramsCell";
 /**request初始化*/
 - (void)createRequest
 {
-    SingleRequest *request = [self getCurrentRequest];
-//    if (request == nil) {
-//#warning need to change
-//        NSDictionary *dic = @{@"baseUrl":@"https://192.168.0.12:8443",
-//                              @"method":@(0),
-//                              @"apiUrl":@"/api/user/login"
-//        };
-//        /**如果没有，则创建新的实体*/
-//        request = [SingleRequest MR_createEntity];
-//        request.baseUrl = [DataParser stringInDictionary:dic forKey:@"baseUrl"];
-//        request.method = dic[@"method"];
-//        request.apiUrl = [DataParser stringInDictionary:dic forKey:@"apiUrl"];
-//        [[self objectContext] MR_saveToPersistentStoreAndWait];
-//    }
-    self.request = request;
-    
     /**request 里参数集需要转换成array进行排序*/
     if(self.request.request_arguments)
     {
@@ -181,7 +165,6 @@ static NSString *reuseID = @"paramsCell";
     }];
 
     NSArray *argumentArray = [DataManager sortedArrayBySortNSSet:self.request.request_arguments withKeys:@[@"argumentID"] ascending:YES];
-    NSLog(@"%@",argumentArray);
     for (int i =0; i < self.argumentsMutaArray.count; i++) {
         NSDictionary *argumentDic = self.argumentsMutaArray[i];
         Arguments *argument;

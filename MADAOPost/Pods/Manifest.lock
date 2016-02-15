@@ -22,22 +22,27 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - MagicalRecord (2.3.0)
+  - MagicalRecord (2.3.2):
+    - MagicalRecord/Core (= 2.3.2)
+  - MagicalRecord/Core (2.3.2)
   - Masonry (0.6.4)
-  - YTKNetwork (0.5.0):
+  - SWTableViewCell (0.3.7)
+  - YTKNetwork (0.6.0):
     - AFDownloadRequestOperation (~> 2.0)
     - AFNetworking (~> 2.0)
 
 DEPENDENCIES:
   - MagicalRecord
   - Masonry
+  - SWTableViewCell
   - YTKNetwork
 
 SPEC CHECKSUMS:
   AFDownloadRequestOperation: 748a1643423e1ddb23f2178f778087d4f0ae8ac7
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
+  MagicalRecord: 53bed74b4323b930992a725be713e53b37d19755
   Masonry: 281802d04d787ea2973179ee8bcb50500579ede2
-  YTKNetwork: 3f163c181ce5f03d52cf88f39d6757f46894280c
+  SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
+  YTKNetwork: 988660d5fab310a55895239751ecfa74c3224a77
 
 COCOAPODS: 0.39.0

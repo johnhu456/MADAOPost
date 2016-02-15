@@ -101,41 +101,43 @@ typedef enum : NSUInteger {
     if ([self.expandDelegate respondsToSelector:@selector(expandTableView:didSelectRowAtIndexPath:)]) {
             [self.expandDelegate expandTableView:tableView didSelectRowAtIndexPath:indexPath];
     }
-    CellState currentState = [self expendCellAtIndex:indexPath];
-    switch (currentState) {
-        case CellStateFail:
-            return;
-            break;
-        case CellStateExpand:
-        {
-            [self beginUpdates];
-            NSMutableArray *waitChange = [[NSMutableArray alloc] init];
-            for (int i= 0 ; i < [self numberOfExpandedSubrowsInSection:indexPath.section]; i++) {
-                if (i != 0) {
-                    [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+    if (indexPath.row == 0)  //只对第一行做展开判断处理；
+    {
+        CellState currentState = [self expendCellAtIndex:indexPath];
+        switch (currentState) {
+            case CellStateFail:
+                return;
+                break;
+            case CellStateExpand:
+            {
+                [self beginUpdates];
+                NSMutableArray *waitChange = [[NSMutableArray alloc] init];
+                for (int i= 0 ; i < [self numberOfExpandedSubrowsInSection:indexPath.section]; i++) {
+                    if (i != 0) {
+                        [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+                    }
                 }
-            }
-            [self insertRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self endUpdates];
+                [self insertRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self endUpdates];
  
-        }
-            break;
-        case CellStateUnExpand:
-        {
-            [self beginUpdates];
-            NSMutableArray *waitChange = [[NSMutableArray alloc] init];
-            for (int i= 0 ; i < [self numberOfTotalExpandedSubrowsInSection:indexPath.section]; i++) {
-                if (i != 0) {
-                    [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
-                }
             }
-            [self deleteRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationTop];
-            [self endUpdates];
-
-        }
-            break;
+                break;
+            case CellStateUnExpand:
+            {
+                [self beginUpdates];
+                NSMutableArray *waitChange = [[NSMutableArray alloc] init];
+                for (int i= 0 ; i < [self numberOfTotalExpandedSubrowsInSection:indexPath.section]; i++) {
+                    if (i != 0) {
+                        [waitChange addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
+                    }
+                }
+                [self deleteRowsAtIndexPaths:waitChange withRowAnimation:UITableViewRowAnimationTop];
+                [self endUpdates];
+            }
+                break;
         default:
-            break;
+                break;
+        }
     }
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

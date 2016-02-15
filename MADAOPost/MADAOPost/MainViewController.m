@@ -42,6 +42,10 @@
     [self setupExpandTableView];
     
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.expandTableView reloadData];
+}
 - (void)findRequestCollection
 {   /**从数据库中查找请求合集,按升序排列*/
     _collections = [[RequestCollection MR_findAllSortedBy:@"collectionID" ascending:YES] copy];
@@ -83,11 +87,16 @@
 #pragma mark - FHExpandTableViewDelegate
 - (void)expandTableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    
-//    DetailRequestViewController *detailRequestVC = [board instantiateViewControllerWithIdentifier:@"DetailRequestVC"];
-//    
-//    [self.navigationController pushViewController:detailRequestVC animated:YES];
+    if(indexPath.row == 0)
+    {
+        return;
+    }
+    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    DetailRequestViewController *detailRequestVC = [board instantiateViewControllerWithIdentifier:@"DetailRequestVC"];
+    RequestCollection *collection = _collections[indexPath.section];
+    SingleRequest *request = [DataManager sortedArrayBySortNSSet:collection.collection_requests withKeys:@[@"requestID"] ascending:YES][indexPath.row - 1];
+    detailRequestVC.request = request;
+    [self.navigationController pushViewController:detailRequestVC animated:YES];
     
 }
 - (void)expandTableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -97,20 +106,9 @@
         
         CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
         collectionSetVC.delegate = self;
-        NSLog(@"%@",_collectionArray);
-        NSLog(@"%@",self.collectionArray);
         collectionSetVC.collection = _collections[indexPath.section];
         [self.navigationController pushViewController:collectionSetVC animated:YES];
-}
-    
-//    if (indexPath.row != 0) {
-//        UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    
-//        CollectionSetViewController *collectionSetVC = [board instantiateViewControllerWithIdentifier:@"CollectionSetVC"];
-//        collectionSetVC.delegate = self;
-//        collectionSetVC.collection = _collections[indexPath.row];
-//        [self.navigationController pushViewController:collectionSetVC animated:YES];
-//    }
+    }
 }
 /**每一个Cell的标题描述*/
 - (NSString *)descriptionForRowAtIndexPath:(NSIndexPath *)indexPath withObj:(id)obj;
@@ -138,8 +136,6 @@
         [self findRequestCollection];
         [self.expandTableView updateDataWithArray:self.collectionArray];
     }
-
-
 }
 /*
 #pragma mark - Navigation
