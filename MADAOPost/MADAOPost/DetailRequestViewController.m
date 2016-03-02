@@ -7,6 +7,7 @@
 //
 
 #import "DetailRequestViewController.h"
+#import "EncryptionTableViewController.h"
 #import "ParamsTableViewCell.h"
 #import "DataManager.h"
 
@@ -155,6 +156,8 @@ static NSString *reuseID = @"paramsCell";
             NSMutableDictionary *dic = self.argumentsMutaArray[i];
             [dic setValue:paramsCell.ftfKey.textField.text forKey:@"key"];
             [dic setValue:paramsCell.ftfValue.textField.text forKey:@"value"];
+//            [dic setValue:[NSNumber numberWithBool:NO] forKey:@"md5"];
+//            [dic setValue:[NSNumber numberWithBool:NO] forKey:@"des"];
             [dic setValue:[NSNumber numberWithInt:i] forKey:@"argumentID"];
         }
     }
@@ -177,6 +180,8 @@ static NSString *reuseID = @"paramsCell";
             argument.key = [DataParser stringInDictionary:argumentDic forKey:@"key"];
             argument.argumentID = [NSNumber numberWithInt:i];
             argument.value = [DataParser stringInDictionary:argumentDic forKey:@"value"];
+//            argument.des = [DataParser booleanInDictionary:argumentDic forKey:@"des"];
+//            argument.md5 = [DataParser booleanInDictionary:argumentDic forKey:@"md5"];
         }];
         /**设置关联*/
         [[self getCurrentRequest] addRequest_argumentsObject:argument];
@@ -239,6 +244,7 @@ static NSString *reuseID = @"paramsCell";
 {
     return 65.f;
 }
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
@@ -262,6 +268,7 @@ static NSString *reuseID = @"paramsCell";
         [[self objectContext] MR_saveToPersistentStoreAndWait];
     }
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
 }
 #pragma mark - UIPickerView
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -313,6 +320,11 @@ static NSString *reuseID = @"paramsCell";
         [self noSaveRequestInCoreData];
         [self setupRequest];
     }
+}
+- (IBAction)encryptButtonOnClicked:(id)sender {
+    EncryptionTableViewController *encryptVC = [[EncryptionTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    encryptVC.request = self.request;
+    [self.navigationController pushViewController:encryptVC animated:YES];
 }
 - (BOOL)checkUrl
 {

@@ -124,6 +124,7 @@
         [[self objectContext] MR_saveToPersistentStoreAndWait];
     }
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    _reload = YES;
 }
 
 #pragma mark - WidgetsAction
@@ -149,6 +150,7 @@
     [self.mainTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.requestsMutaArray.count - 1
                                                                   inSection:0]
                               atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    _reload = YES;
 }
 - (void)saveButtonOnClicked:(UIBarButtonItem *)button
 {

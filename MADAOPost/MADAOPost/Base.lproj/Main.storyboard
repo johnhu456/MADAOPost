@@ -159,6 +159,12 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2rT-AI-Uv2"/>
+                                    <barButtonItem title="Encrypt" id="kFE-2N-Lj0">
+                                        <connections>
+                                            <action selector="encryptButtonOnClicked:" destination="BYZ-38-t0r" id="Wgr-ak-bgu"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Cn5-QK-jLd"/>
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYB-u6-Kqy">
@@ -248,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="792" y="208"/>
+            <point key="canvasLocation" x="721" y="208"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="IJZ-Y1-K8v">

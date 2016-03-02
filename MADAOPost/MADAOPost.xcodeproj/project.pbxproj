@@ -30,8 +30,6 @@
 		E085FA811C48E84400838701 /* MADAOPost.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E085FA7F1C48E84400838701 /* MADAOPost.xcdatamodeld */; };
 		E085FAA81C4C77F000838701 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAA71C4C77F000838701 /* DataManager.m */; };
 		E085FAAB1C4C7D6500838701 /* DataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAAA1C4C7D6500838701 /* DataParser.m */; };
-		E085FAB81C4C90FE00838701 /* Arguments+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAAD1C4C90FE00838701 /* Arguments+CoreDataProperties.m */; };
-		E085FAB91C4C90FE00838701 /* Arguments.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAAF1C4C90FE00838701 /* Arguments.m */; };
 		E085FABA1C4C90FE00838701 /* RequestCollection+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAB11C4C90FE00838701 /* RequestCollection+CoreDataProperties.m */; };
 		E085FABB1C4C90FE00838701 /* RequestCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAB31C4C90FE00838701 /* RequestCollection.m */; };
 		E085FABC1C4C90FE00838701 /* SingleRequest+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FAB51C4C90FE00838701 /* SingleRequest+CoreDataProperties.m */; };
@@ -44,6 +42,11 @@
 		E085FB1C1C4F545F00838701 /* FHTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E085FB1B1C4F545F00838701 /* FHTextView.m */; };
 		E098D5F11C61996F005CAB4E /* FHExpandCellIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */; };
 		E098D5F41C61A01A005CAB4E /* FHExpandNormalTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */; };
+		E098D63A1C7174CC005CAB4E /* EncryptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D6391C7174CC005CAB4E /* EncryptionTableViewController.m */; };
+		E098D63E1C717DDB005CAB4E /* EncryptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D63C1C717DDB005CAB4E /* EncryptTableViewCell.m */; };
+		E098D63F1C717DDB005CAB4E /* EncryptTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E098D63D1C717DDB005CAB4E /* EncryptTableViewCell.xib */; };
+		E098D6441C72B5ED005CAB4E /* Arguments+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D6411C72B5ED005CAB4E /* Arguments+CoreDataProperties.m */; };
+		E098D6451C72B5ED005CAB4E /* Arguments.m in Sources */ = {isa = PBXBuildFile; fileRef = E098D6431C72B5ED005CAB4E /* Arguments.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,10 +111,6 @@
 		E085FAA71C4C77F000838701 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		E085FAA91C4C7D6500838701 /* DataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataParser.h; sourceTree = "<group>"; };
 		E085FAAA1C4C7D6500838701 /* DataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataParser.m; sourceTree = "<group>"; };
-		E085FAAC1C4C90FE00838701 /* Arguments+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Arguments+CoreDataProperties.h"; sourceTree = "<group>"; };
-		E085FAAD1C4C90FE00838701 /* Arguments+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Arguments+CoreDataProperties.m"; sourceTree = "<group>"; };
-		E085FAAE1C4C90FE00838701 /* Arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arguments.h; sourceTree = "<group>"; };
-		E085FAAF1C4C90FE00838701 /* Arguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arguments.m; sourceTree = "<group>"; };
 		E085FAB01C4C90FE00838701 /* RequestCollection+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RequestCollection+CoreDataProperties.h"; sourceTree = "<group>"; };
 		E085FAB11C4C90FE00838701 /* RequestCollection+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RequestCollection+CoreDataProperties.m"; sourceTree = "<group>"; };
 		E085FAB21C4C90FE00838701 /* RequestCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCollection.h; sourceTree = "<group>"; };
@@ -135,6 +134,15 @@
 		E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHExpandCellIndicatorView.m; sourceTree = "<group>"; };
 		E098D5F21C61A01A005CAB4E /* FHExpandNormalTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHExpandNormalTableViewCell.h; sourceTree = "<group>"; };
 		E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHExpandNormalTableViewCell.m; sourceTree = "<group>"; };
+		E098D6381C7174CC005CAB4E /* EncryptionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionTableViewController.h; sourceTree = "<group>"; };
+		E098D6391C7174CC005CAB4E /* EncryptionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionTableViewController.m; sourceTree = "<group>"; };
+		E098D63B1C717DDB005CAB4E /* EncryptTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptTableViewCell.h; sourceTree = "<group>"; };
+		E098D63C1C717DDB005CAB4E /* EncryptTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptTableViewCell.m; sourceTree = "<group>"; };
+		E098D63D1C717DDB005CAB4E /* EncryptTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptTableViewCell.xib; sourceTree = "<group>"; };
+		E098D6401C72B5ED005CAB4E /* Arguments+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Arguments+CoreDataProperties.h"; sourceTree = "<group>"; };
+		E098D6411C72B5ED005CAB4E /* Arguments+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Arguments+CoreDataProperties.m"; sourceTree = "<group>"; };
+		E098D6421C72B5ED005CAB4E /* Arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Arguments.h; sourceTree = "<group>"; };
+		E098D6431C72B5ED005CAB4E /* Arguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arguments.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +270,8 @@
 				E085FB181C4F540D00838701 /* CollectionSetViewController.m */,
 				E085F9E51C4654BB00838701 /* DetailRequestViewController.h */,
 				E085F9E61C4654BB00838701 /* DetailRequestViewController.m */,
+				E098D6381C7174CC005CAB4E /* EncryptionTableViewController.h */,
+				E098D6391C7174CC005CAB4E /* EncryptionTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -301,10 +311,10 @@
 		E085F9FA1C472E0500838701 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E085FAAC1C4C90FE00838701 /* Arguments+CoreDataProperties.h */,
-				E085FAAD1C4C90FE00838701 /* Arguments+CoreDataProperties.m */,
-				E085FAAE1C4C90FE00838701 /* Arguments.h */,
-				E085FAAF1C4C90FE00838701 /* Arguments.m */,
+				E098D6401C72B5ED005CAB4E /* Arguments+CoreDataProperties.h */,
+				E098D6411C72B5ED005CAB4E /* Arguments+CoreDataProperties.m */,
+				E098D6421C72B5ED005CAB4E /* Arguments.h */,
+				E098D6431C72B5ED005CAB4E /* Arguments.m */,
 				E085FAB01C4C90FE00838701 /* RequestCollection+CoreDataProperties.h */,
 				E085FAB11C4C90FE00838701 /* RequestCollection+CoreDataProperties.m */,
 				E085FAB21C4C90FE00838701 /* RequestCollection.h */,
@@ -365,6 +375,9 @@
 				E098D5F31C61A01A005CAB4E /* FHExpandNormalTableViewCell.m */,
 				E098D5EF1C61996F005CAB4E /* FHExpandCellIndicatorView.h */,
 				E098D5F01C61996F005CAB4E /* FHExpandCellIndicatorView.m */,
+				E098D63B1C717DDB005CAB4E /* EncryptTableViewCell.h */,
+				E098D63C1C717DDB005CAB4E /* EncryptTableViewCell.m */,
+				E098D63D1C717DDB005CAB4E /* EncryptTableViewCell.xib */,
 			);
 			name = TableViewCell;
 			sourceTree = "<group>";
@@ -479,6 +492,7 @@
 				E085FABF1C4CDF1000838701 /* Certificate_Shire_x.cer in Resources */,
 				E085FA7E1C48DCA600838701 /* Certificate_Shire.cer in Resources */,
 				E085F9BC1C46510C00838701 /* LaunchScreen.storyboard in Resources */,
+				E098D63F1C717DDB005CAB4E /* EncryptTableViewCell.xib in Resources */,
 				E085F9B91C46510C00838701 /* Assets.xcassets in Resources */,
 				E085F9B71C46510C00838701 /* Main.storyboard in Resources */,
 			);
@@ -554,7 +568,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E085FAAB1C4C7D6500838701 /* DataParser.m in Sources */,
-				E085FAB81C4C90FE00838701 /* Arguments+CoreDataProperties.m in Sources */,
 				E085FB161C4F231800838701 /* MainViewController.m in Sources */,
 				E085FA0E1C47479600838701 /* Foundation+Log.m in Sources */,
 				E085FB1C1C4F545F00838701 /* FHTextView.m in Sources */,
@@ -564,14 +577,17 @@
 				E085FA811C48E84400838701 /* MADAOPost.xcdatamodeld in Sources */,
 				E085FABB1C4C90FE00838701 /* RequestCollection.m in Sources */,
 				E085FB111C4F216900838701 /* FHExpandTableView.m in Sources */,
+				E098D6451C72B5ED005CAB4E /* Arguments.m in Sources */,
 				E085FABC1C4C90FE00838701 /* SingleRequest+CoreDataProperties.m in Sources */,
 				E085FA781C48D3A200838701 /* DESencrypt.m in Sources */,
+				E098D63A1C7174CC005CAB4E /* EncryptionTableViewController.m in Sources */,
 				E085F9FD1C472EAC00838701 /* RequestModel.m in Sources */,
 				E085F9E71C4654BB00838701 /* DetailRequestViewController.m in Sources */,
 				E085F9ED1C4657DA00838701 /* ParamsTableViewCell.m in Sources */,
 				E085F9AE1C46510C00838701 /* main.m in Sources */,
 				E085FABA1C4C90FE00838701 /* RequestCollection+CoreDataProperties.m in Sources */,
 				E085FA0D1C47479600838701 /* FHTool.m in Sources */,
+				E098D6441C72B5ED005CAB4E /* Arguments+CoreDataProperties.m in Sources */,
 				E085FAA81C4C77F000838701 /* DataManager.m in Sources */,
 				E085FB191C4F540D00838701 /* CollectionSetViewController.m in Sources */,
 				E085FA791C48D3A200838701 /* GTMBase64.m in Sources */,
@@ -579,8 +595,8 @@
 				E085FB121C4F216900838701 /* FHExpandTableViewCell.m in Sources */,
 				E085FA0F1C47479600838701 /* UIView+Frame.m in Sources */,
 				E085FABD1C4C90FE00838701 /* SingleRequest.m in Sources */,
-				E085FAB91C4C90FE00838701 /* Arguments.m in Sources */,
 				E085FA771C48D3A200838701 /* LLPayUtil.m in Sources */,
+				E098D63E1C717DDB005CAB4E /* EncryptTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

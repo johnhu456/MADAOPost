@@ -2,7 +2,9 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15A284" minimumToolsVersion="Xcode 7.0">
     <entity name="Arguments" representedClassName="Arguments" syncable="YES">
         <attribute name="argumentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="des" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="md5" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="argument_request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SingleRequest" inverseName="request_arguments" inverseEntity="SingleRequest" syncable="YES"/>
     </entity>
@@ -22,7 +24,7 @@
         <relationship name="request_collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RequestCollection" inverseName="collection_requests" inverseEntity="RequestCollection" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Arguments" positionX="-315" positionY="180" width="128" height="105"/>
+        <element name="Arguments" positionX="-315" positionY="180" width="128" height="135"/>
         <element name="RequestCollection" positionX="-45" positionY="0" width="128" height="105"/>
         <element name="SingleRequest" positionX="-666" positionY="246" width="128" height="150"/>
     </elements>
