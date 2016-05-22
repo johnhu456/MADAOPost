@@ -56,7 +56,7 @@
     NSMutableArray *sortKeyArray = [NSMutableArray new];
     for (id keyStr in keys) {
         if ([keyStr isKindOfClass:[NSString class]]) {
-            NSSortDescriptor *sortDes = [[NSSortDescriptor alloc] initWithKey:keyStr ascending:YES];
+            NSSortDescriptor *sortDes = [[NSSortDescriptor alloc] initWithKey:keyStr ascending:ascend];
             [sortKeyArray addObject:sortDes];
         }
     }

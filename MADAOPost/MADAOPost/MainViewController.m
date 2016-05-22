@@ -60,6 +60,7 @@
 //==========================================================
 #warning todo
         [[self objectContext] MR_saveToPersistentStoreAndWait];
+        
         /**数据包装*/
         NSArray *tempArray = [DataManager sortedArrayBySortNSSet:newCollection.collection_requests withKeys:@[@"requestID"] ascending:YES];
         tempArray = [DataManager expendArray:tempArray withObject:newCollection atIndex:0];
